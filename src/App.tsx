@@ -23,7 +23,7 @@ export default function App() {
       </div>
 
       {/* Selected Projects section */}
-      <div id="projects-section" className="relative z-10 w-full bg-[#fcfcfa]/80 backdrop-blur-[2px]">
+      <div className="relative z-10 w-full bg-white">
         <Projects />
       </div>
 

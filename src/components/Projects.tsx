@@ -27,31 +27,17 @@ const PROJECTS: Project[] = [
   },
   {
     id: 3,
-    title: "Kinetic",
-    category: "Motion",
-    subtitle: "Fluid Physics & High-Framerate 3D Interactions",
+    title: "Sonnet",
+    category: "Digital",
+    subtitle: "An elegant digital writing and reading experience",
     image: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=1200&auto=format&fit=crop",
   },
   {
     id: 4,
-    title: "V-Media",
-    category: "Branding",
-    subtitle: "High-Performance Digital Marketing Studio",
+    title: "Tapl",
+    category: "Motion",
+    subtitle: "High-Performance Interactive Prototypes",
     image: "https://images.unsplash.com/photo-1626785774573-4b799315345d?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: 5,
-    title: "Nume",
-    category: "Experiment",
-    subtitle: "Minimalistic Interface for Decentralized Finance",
-    image: "https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: 6,
-    title: "Jenkos",
-    category: "Digital",
-    subtitle: "Immersive Agency Landing & Project Showcases",
-    image: "https://images.unsplash.com/photo-1616469829581-73993eb86b02?q=80&w=1200&auto=format&fit=crop",
   },
 ];
 
@@ -105,11 +91,13 @@ export default function Projects() {
   };
 
   return (
-    <section id="projects-section" className="w-full h-screen p-[20px] pt-[100px] flex flex-col bg-white overflow-hidden">
+    <section id="projects-section" className="relative w-full h-screen pt-[110px] px-[20px] pb-[16px] flex flex-col bg-white overflow-hidden">
       {/* Title */}
-      <h2 className="text-3xl md:text-4xl font-bold font-heading text-[#0f172a] mb-5 text-center tracking-tight shrink-0">
-        Selected Projects
-      </h2>
+      <div className="w-full shrink-0 mb-8 flex items-center justify-center">
+        <h2 className="text-3xl md:text-4xl font-bold font-heading text-[#0f172a] text-center tracking-tight">
+          Selected Projects
+        </h2>
+      </div>
 
       {/* Main Slide Container - fills remaining space */}
       <div className="relative w-full flex-1 min-h-0 rounded-[24px] overflow-hidden bg-slate-50 border border-[#e5e7eb] shadow-sm">
@@ -150,7 +138,7 @@ export default function Projects() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
             {/* Content */}
-            <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 md:p-12 flex flex-col md:flex-row items-start md:items-end justify-between gap-6">
+            <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 md:px-10 md:pb-6 md:pt-10 flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pointer-events-auto">
               <div className="flex flex-col gap-3 w-full md:w-auto">
                 <span className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-3.5 py-1.5 rounded-full text-xs font-semibold font-heading shadow-sm tracking-wide w-fit">
                   {project.category}
@@ -172,7 +160,7 @@ export default function Projects() {
         </AnimatePresence>
 
         {/* Apple-style Dots */}
-        <div className="absolute bottom-6 left-0 right-0 z-10 flex items-center justify-center gap-2">
+        <div className="absolute bottom-4 left-0 right-0 z-10 flex items-center justify-center gap-2">
           {PROJECTS.map((_, idx) => (
             <button
               key={idx}

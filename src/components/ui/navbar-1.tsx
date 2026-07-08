@@ -5,21 +5,39 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { Menu, X } from "lucide-react"
 
-const Navbar1 = () => {
+interface NavbarProps {
+  currentView?: string;
+  onViewChange?: (view: string) => void;
+}
+
+const Navbar1 = ({ currentView = "home", onViewChange }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const toggleMenu = () => setIsOpen(!isOpen)
+
+  const handleNavClick = (e: React.MouseEvent, item: string) => {
+    e.preventDefault()
+    if (!onViewChange) return
+
+    const lowerItem = item.toLowerCase()
+    if (lowerItem === "home") {
+      onViewChange("home")
+    } else if (lowerItem === "projects") {
+      onViewChange("projects")
+    }
+  }
 
   return (
     <div className="flex justify-center w-full fixed top-0 left-0 right-0 z-50">
       <div className="flex items-center justify-between px-8 py-3 bg-white border-b border-x border-[#e5e7eb] shadow-sm rounded-b-[14px] w-full max-w-7xl relative">
         <div className="flex items-center">
           <motion.div
-            className="w-8 h-8 mr-6"
+            className="w-8 h-8 mr-6 cursor-pointer"
             initial={{ scale: 0.8 }}
             animate={{ scale: 1 }}
             whileHover={{ rotate: 10 }}
             transition={{ duration: 0.3 }}
+            onClick={(e) => handleNavClick(e, "Home")}
           >
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="16" cy="16" r="16" fill="url(#paint0_linear)" />
@@ -35,19 +53,39 @@ const Navbar1 = () => {
         
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            {["Home", "Pricing", "Docs", "Projects"].map((item) => (
-              <motion.div
-                key={item}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                whileHover={{ scale: 1.05 }}
-              >
-                <a href="#" className="text-sm text-gray-900 hover:text-gray-600 transition-colors font-medium">
-                  {item}
-                </a>
-              </motion.div>
-            ))}
+            {["Home", "Pricing", "Docs", "Projects"].map((item) => {
+              const isPageLink = item === "Home" || item === "Projects";
+              const isActive = isPageLink && currentView === item.toLowerCase();
+              return (
+                <motion.div
+                  key={item}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  whileHover={{ scale: 1.05 }}
+                  className="relative py-1"
+                >
+                  <a
+                    href="#"
+                    onClick={(e) => handleNavClick(e, item)}
+                    className={`text-sm transition-colors font-semibold tracking-wide ${
+                      isActive
+                        ? "text-blue-600"
+                        : "text-gray-600 hover:text-black"
+                    }`}
+                  >
+                    {item}
+                  </a>
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeTabUnderline"
+                      className="absolute -bottom-1.5 left-0 right-0 h-[2.5px] bg-blue-600 rounded-full"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </motion.div>
+              );
+            })}
           </nav>
 
         {/* Desktop CTA Button */}
@@ -60,7 +98,7 @@ const Navbar1 = () => {
         >
           <a
             href="#"
-            className="inline-flex items-center justify-center px-5 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center justify-center px-5 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
           >
             Contact
           </a>
@@ -93,19 +131,32 @@ const Navbar1 = () => {
               <X className="h-6 w-6 text-gray-900" />
             </motion.button>
             <div className="flex flex-col space-y-6">
-              {["Home", "Pricing", "Docs", "Projects"].map((item, i) => (
-                <motion.div
-                  key={item}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.1 + 0.1 }}
-                  exit={{ opacity: 0, x: 20 }}
-                >
-                  <a href="#" className="text-base text-gray-900 font-medium" onClick={toggleMenu}>
-                    {item}
-                  </a>
-                </motion.div>
-              ))}
+              {["Home", "Pricing", "Docs", "Projects"].map((item, i) => {
+                const isPageLink = item === "Home" || item === "Projects";
+                const isActive = isPageLink && currentView === item.toLowerCase();
+                return (
+                  <motion.div
+                    key={item}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.1 + 0.1 }}
+                    exit={{ opacity: 0, x: 20 }}
+                  >
+                    <a
+                      href="#"
+                      className={`text-base font-semibold tracking-wide ${
+                        isActive ? "text-blue-600" : "text-gray-900"
+                      }`}
+                      onClick={(e) => {
+                        handleNavClick(e, item)
+                        toggleMenu()
+                      }}
+                    >
+                      {item}
+                    </a>
+                  </motion.div>
+                );
+              })}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
